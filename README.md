@@ -56,7 +56,7 @@ mkdir -p ~/.config/systemd/user
 
 sudo tee ~/.config/systemd/user/mirabox.service <<EOF
 [Unit]
-Description=Mirabox Remote Controller
+Description=Mirabox Controller daemon
 After=graphical-session.target pipewire.service pipewire-pulse.service
 PartOf=graphical-session.target
 
@@ -78,10 +78,18 @@ systemctl --user enable --now mirabox.service
 ```
 Modify mirabox.service to match your user.
 
-View logs:
+Starting and stopping service manually
+
+```bash￼
+systemctl --user stop mirabox.service
+systemctl --user start mirabox.service
+```
+
+View service logs:
 ```bash￼
 journalctl --user -u mirabox.service -f
 ```
+
 
 ## Configuration
 
