@@ -54,6 +54,7 @@ cp mirabox.service ~/.config/systemd/user/
 systemctl --user daemon-reload
 systemctl --user enable --now mirabox.service
 ```
+Modify mirabox.service to match your user.
 
 View logs:
 ```bash￼
