@@ -1,11 +1,28 @@
 #!/usr/bin/python3
-import signal, sys, os, json, time, subprocess, threading
+
+import signal, sys, os, json, time, subprocess, threading, argparse
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="PIL.Image")
+
 from StreamDock.DeviceManager import DeviceManager
 from StreamDock.Devices.StreamDockN1 import StreamDockN1
 
-NUM_SETS = 10                                 # 10 sets
+# ==================== ARGS ====================
+__version__ = "0.1.0"
+parser = argparse.ArgumentParser()
+parser.add_argument("--version", action="version", version=f"MiraBox Controller v{__version__}")
+parser.add_argument("--debug", action="store_true", help="Show all messages (otherwise completely silent)")
+args = parser.parse_args()
+DEBUG = args.debug
+
+def log(*msg):
+    if DEBUG:
+        print(*msg)
+
+# ==================== CONFIG ====================
+NUM_SETS = 10
 current_set = 0
-sets = []
+sets = [None] * NUM_SETS
 streamdocks = []
 set_switch_in_progress = False
 original_brightness = 10
@@ -15,38 +32,38 @@ DECK_ROTARY_CCW = 160
 DECK_ROTARY_CW  = 161
 PROGRAMMABLE_ROTARIES = {80, 81, 144, 145, 112, 113}
 
-# === LONG PRESS SUPPORT ===
 LONG_PRESS_DURATION = 1.0
 button_press_time = {}
+running_processes = {}
+BUTTON_COMMANDS = {}
 
-# ----------------------------------------------------------------------
-# (load_set, apply_set, flash_confirm, signal_handler, parse_feedback unchanged)
-# ----------------------------------------------------------------------
-# ... keep your existing load_set, apply_set, flash_confirm, signal_handler, parse_feedback ...
-
+# ==================== LOAD SET ====================
 def load_set(n):
+    fn = f"button-set-{n}.json"
+    log(f"Loading {fn}")
     try:
-        with open(f"button-set-{n}.json") as f:
+        with open(fn) as f:
             data = json.load(f)
         bg = data.get("background", "./img/default-slider.png")
-        buttons = data.get("buttons", {})
-        normalized = {}
-        for k, v in buttons.items():
-            normalized[int(k)] = {
-                "image": v.get("image"),
-                "command": v.get("command", []),
-                "gui": v.get("gui", False)
-            }
-        return {"bg": bg, "buttons": normalized}
+        buttons = {}
+        for k, v in data.get("buttons", {}).items():
+            key = int(k)
+            img = v.get("image", "./img/default-button.png")
+            buttons[key] = {"image": img, "command": v.get("command", []), "gui": v.get("gui", False)}
+        log(f"{fn} → OK")
+        return {"bg": bg, "buttons": buttons}
     except Exception as e:
-        print(f"Warning: set {n} failed: {e}")
+        log(f"{fn} → FAILED: {e}")
         return None
 
+# ==================== APPLY SET (silent) ====================
 def apply_set(idx):
-    global BUTTON_COMMANDS, set_switch_in_progress, original_brightness
-    s = sets[idx]
-    if not s: return
+    global BUTTON_COMMANDS, set_switch_in_progress
+    if not sets[idx]:
+        set_switch_in_progress = False
+        return
 
+    s = sets[idx]
     BUTTON_COMMANDS = {}
     for k, btn in s["buttons"].items():
         cmd = btn.get("command", [])
@@ -55,7 +72,8 @@ def apply_set(idx):
         BUTTON_COMMANDS[k] = (cmd, btn.get("gui", False))
 
     for dev in streamdocks:
-        dev.set_touchscreen_image(s["bg"])
+        bg = s["bg"] if os.path.exists(s["bg"]) else "./img/default-slider.png"
+        dev.set_touchscreen_image(bg)
         dev.refresh()
         time.sleep(1.8)
         for i in range(1, 11):
@@ -66,8 +84,7 @@ def apply_set(idx):
             dev.refresh()
         time.sleep(0.12)
 
-    print(f"Applied set {idx + 1}")
-
+    log(f"→ Set {idx + 1}")
     for dev in streamdocks:
         dev.set_brightness(original_brightness)
     set_switch_in_progress = False
@@ -80,7 +97,8 @@ def flash_confirm():
         dev.set_brightness(original_brightness)
 
 def signal_handler(sig, frame):
-    print("\nShutting down...")
+    if DEBUG:
+        print("\nShutting down...")
     for p in list(running_processes.values()):
         if p.poll() is None:
             p.terminate()
@@ -91,146 +109,144 @@ def signal_handler(sig, frame):
         except: pass
     sys.exit(0)
 
-def parse_feedback(t):
-    try:
-        parts = t.split(", ")
-        key = int(parts[2].split(": ")[1])
-        status = int(parts[3].split(": ")[1])
-        return key, status
-    except: return None, None
-
-# ----------------------------------------------------------------------
-# ONLY THIS CLASS WAS WRONG – fixed with proper globals
-# ----------------------------------------------------------------------
-class StreamDockPrintCapture:
+# ==================== COMPLETELY SILENT CAPTURE ====================
+class SilentCapture:
     def __init__(self):
-        self.original_stdout = sys.stdout
+        self.original = sys.stdout
         self.last_press_time = {}
         self.debounce = 0.05
 
     def write(self, text):
-        self.original_stdout.write(text)
-        t = text.strip()
-        if t.startswith("Acknowledgement: ACK"):
-            key, status = parse_feedback(t)
-            if key is None:
-                return
+        line = text.rstrip("\n")
 
-            now = time.time()
-            global current_set, set_switch_in_progress, flash_brightness   # ← FIXED!
+        # Always process events
+        if "Acknowledgement: ACK" in line:
+            try:
+                parts = line.split(", ")
+                key = int(parts[2].split(": ")[1])
+                status = int(parts[3].split(": ")[1])
+                self._handle(key, status)
+            except:
+                pass
 
-            # ---- BUTTON PRESS (status 1) ----
-            if status == 1 and 1 <= key <= 10:
-                if now - self.last_press_time.get(key, 0) > self.debounce:
-                    self.last_press_time[key] = now
-                    button_press_time[key] = now
-                    flash_confirm()
-
-            # ---- BUTTON RELEASE (status 0) ----
-            elif status == 0 and key in button_press_time:
-                press_duration = now - button_press_time[key]
-                del button_press_time[key]
-
-                if now - self.last_press_time.get(key, 0) > self.debounce:
-                    self.last_press_time[key] = now
-
-                    # LONG PRESS → jump to set N
-                    if press_duration >= LONG_PRESS_DURATION and 1 <= key <= NUM_SETS:
-                        if not set_switch_in_progress:
-                            print(f"LONG PRESS button {key} ({press_duration:.2f}s) → Set {key}")
-                            set_switch_in_progress = True
-                            for dev in streamdocks:
-                                dev.set_brightness(flash_brightness)
-                            current_set = key - 1
-                            apply_set(current_set)
-                        return
-
-                    # SHORT PRESS → normal command
-                    self.handle_event(key)
-
-            # ---- ROTARY & HOME (unchanged) ----
-            elif key == DECK_ROTARY_CCW:
-                self.handle_deck_rotary(-1); return
-            elif key == DECK_ROTARY_CW:
-                self.handle_deck_rotary(+1); return
-            elif key == 55 and status == 1:
-                self.handle_home(); return
-
-            # Programmable rotaries
-            elif key in PROGRAMMABLE_ROTARIES and status == 0:
-                if now - self.last_press_time.get(key, 0) > self.debounce:
-                    self.last_press_time[key] = now
-                    self.handle_event(key)
-
-        if t.endswith(("Status: 0", "Status: 1")):
-            self.original_stdout.write("\n")
-
-    def flush(self): self.original_stdout.flush()
-
-    # ------------------------------------------------------------------
-    # helper methods (unchanged)
-    # ------------------------------------------------------------------
-    def handle_deck_rotary(self, direction):
-        global current_set, set_switch_in_progress, flash_brightness
-        if set_switch_in_progress:
+        # In normal mode → suppress everything
+        if not DEBUG:
             return
+
+        # Debug mode → print raw output
+        self.original.write(text)
+
+    def flush(self): self.original.flush()
+
+    def _handle(self, key, status):
+        now = time.time()
+        global current_set, set_switch_in_progress
+
+        # Button down
+        if status == 1 and 1 <= key <= 10:
+            if now - self.last_press_time.get(key, 0) > self.debounce:
+                self.last_press_time[key] = now
+                button_press_time[key] = now
+                flash_confirm()
+
+        # Button up
+        elif status == 0 and key in button_press_time:
+            duration = now - button_press_time[key]
+            del button_press_time[key]
+            if now - self.last_press_time.get(key, 0) > self.debounce:
+                self.last_press_time[key] = now
+
+                if duration >= LONG_PRESS_DURATION and key <= NUM_SETS:
+                    if not set_switch_in_progress:
+                        log(f"→ Set {key} (long press)")
+                        set_switch_in_progress = True
+                        for dev in streamdocks: dev.set_brightness(flash_brightness)
+                        current_set = key - 1
+                        apply_set(current_set)
+                    return
+
+                self._run(key)
+
+        # Rotary
+        elif key == DECK_ROTARY_CCW:
+            self._rotary(-1)
+        elif key == DECK_ROTARY_CW:
+            self._rotary(+1)
+
+        # Home
+        elif key == 55 and status == 1:
+            self._home()
+
+        # Programmable rotaries
+        elif key in PROGRAMMABLE_ROTARIES and status == 0:
+            if now - self.last_press_time.get(key, 0) > self.debounce:
+                self.last_press_time[key] = now
+                self._run(key)
+
+    def _rotary(self, d):
+        global current_set, set_switch_in_progress
+        if set_switch_in_progress: return
         set_switch_in_progress = True
-        for dev in streamdocks:
-            dev.set_brightness(flash_brightness)
-        current_set = (current_set + direction) % NUM_SETS
+        for dev in streamdocks: dev.set_brightness(flash_brightness)
+        current_set = (current_set + d) % NUM_SETS
+        log(f"→ Set {current_set + 1} (rotary)")
         apply_set(current_set)
-        print(f"Deck Rotary → Set {current_set + 1}")
 
-    def handle_home(self):
-        global current_set, set_switch_in_progress, flash_brightness
-        if set_switch_in_progress:
-            return
+    def _home(self):
+        global current_set, set_switch_in_progress
+        if set_switch_in_progress: return
         set_switch_in_progress = True
-        for dev in streamdocks:
-            dev.set_brightness(flash_brightness)
+        for dev in streamdocks: dev.set_brightness(flash_brightness)
         current_set = 0
+        log("→ Set 1 (home)")
         apply_set(current_set)
-        print("Home → Set 1")
 
-    def handle_event(self, key):
+    def _run(self, key):
         flash_confirm()
-        if key in BUTTON_COMMANDS:
-            cmds, gui = BUTTON_COMMANDS[key]
-            print(f"Executing key {key} ({'GUI' if gui else 'CLI'})")
-            for cmd in cmds:
-                if not cmd: continue
+        if key not in BUTTON_COMMANDS: return
+        cmds, gui = BUTTON_COMMANDS[key]
+        mode = "GUI" if gui else "CLI"
+        log(f"Executing key {key} ({mode})")
+        for cmd in cmds:
+            if not cmd: continue
+            try:
                 if gui:
                     subprocess.Popen(cmd, start_new_session=True,
-                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 else:
-                    try:
-                        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                             env=os.environ.copy(), start_new_session=True)
-                        running_processes[key] = p
-                        out, err = p.communicate(timeout=5)
-                        out, err = out.decode().strip(), err.decode().strip()
-                        print(f"Success: {out}" if p.returncode == 0 else f"Failed: {err}")
-                        running_processes.pop(key, None)
-                    except Exception as e:
-                        print(f"Error: {e}")
+                    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                         env=os.environ.copy(), start_new_session=True)
+                    running_processes[key] = p
+                    out, err = p.communicate(timeout=10)
+                    out, err = out.decode().strip(), err.decode().strip()
+                    if p.returncode == 0 and out:
+                        log(f"Success: {out}")
+                    elif p.returncode != 0:
+                        log(f"Failed: {err or p.returncode}")
+                    running_processes.pop(key, None)
+            except Exception as e:
+                log(f"Error: {e}")
 
-# ----------------------------------------------------------------------
-# main – unchanged
-# ----------------------------------------------------------------------
+# ==================== MAIN ====================
 if __name__ == "__main__":
+    if DEBUG:
+        print(f"MiraBox Controller v{__version__} starting in DEBUG mode...")
+
     for i in range(NUM_SETS):
-        sets.append(load_set(i+1))
+        sets[i] = load_set(i+1)
 
     signal.signal(signal.SIGINT, signal_handler)
-    sys.stdout = StreamDockPrintCapture()
+    sys.stdout = SilentCapture()
 
     manager = DeviceManager()
     streamdocks = manager.enumerate()
     threading.Thread(target=manager.listen, daemon=True).start()
-    print(f"Found {len(streamdocks)} device(s)")
+    log(f"Found {len(streamdocks)} device(s)")
 
     for dev in streamdocks:
-        dev.open(); dev.init(); dev.set_brightness(original_brightness)
+        dev.open()
+        dev.init()
+        dev.set_brightness(original_brightness)
         if isinstance(dev, StreamDockN1):
             dev.switch_mode(0)
         threading.Thread(target=dev.whileread, daemon=True).start()
@@ -243,4 +259,3 @@ if __name__ == "__main__":
             time.sleep(1)
     except KeyboardInterrupt:
         signal_handler(None, None)
-
