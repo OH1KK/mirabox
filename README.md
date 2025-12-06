@@ -49,6 +49,11 @@ chmod +x mirabox.py
 ./mirabox.py
 ```
 
+or with verbose
+```bash
+./mirabox.py --debug
+```
+
 ### 4. Auto-start (systemd user service)
 
 ```bash
