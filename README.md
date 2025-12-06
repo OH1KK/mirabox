@@ -65,8 +65,8 @@ PartOf=graphical-session.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/someuser/mirabox
-ExecStart=/usr/bin/python3 /home/someuser/mirabox/mirabox.py
+WorkingDirectory=/home/$USER/mirabox
+ExecStart=/usr/bin/python3 /home/$USER/mirabox/mirabox.py
 Restart=always
 RestartSec=10
 StandardOutput=journal
