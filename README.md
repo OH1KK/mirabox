@@ -45,7 +45,7 @@ cd mirabox
 chmod +x mirabox.py
 ./mirabox.py
 ```
-￼
+
 ### 4. Auto-start (systemd user service)
 
 ```bash
