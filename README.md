@@ -94,20 +94,46 @@ Rotary encoder example (volume):
 
 ### Controls
 
-Action Function
-Large left rotary > Next / previous set
-Push large rotary (key 55)  > Jump to set 1
-Short press button 1–10 > Execute command
-Long press button 1–10 > Jump to corresponding set (1–10)
-Short brightness flash > Button press acknowledged
-Long brightness flash > Set change in progress
+* Action Function
+* Large left rotary > Next / previous set
+* Push large rotary (key 55)  > Jump to set 1
+* Short press button 1–10 > Execute command
+* Long press button 1–10 > Jump to corresponding set (1–10)
+* Short brightness flash > Button press acknowledged
+* Long brightness flash > Set change in progress
 
 Key codes (for reference)
 
-Buttons 1–10          → key 1–10
-Large rotary CCW/CW   → 160 / 161
-Small rotaries        → 80/81, 144/145, 112/113
-Large rotary push     → key 55
+```
+Keycode 1 = button 1, status: 1 = pressed, 0 released
+Keycode 2 = button 2, status: 1 = pressed, 0 released
+Keycode 3 = button 3, status: 1 = pressed, 0 released
+Keycode 4 = button 4, status: 1 = pressed, 0 released
+Keycode 5 = button 5, status: 1 = pressed, 0 released
+Keycode 6 = button 6, status: 1 = pressed, 0 released
+Keycode 7 = button 7, status: 1 = pressed, 0 released
+Keycode 8 = button 8, status: 1 = pressed, 0 released
+Keycode 9 = button 9, status: 1 = pressed, 0 released
+Keycode 10 = button 10, status: 1 = pressed, 0 released
+Keycode 56 = Swipe right
+Keycode 57 = Swipe left
+Keycode 64 = touchscreen above of button 1
+Keycode 65 = touchscreen above of button 1
+Keycode 66 = touchscreen above of button 1
+Keycode 67 = touchscreen above of button 1
+Keycode 160 = button 1 counterclockwise
+Keycode 161 = button 1 clockwise
+Keycode 80 = button 2 counterclockwise
+Keycode 81 = button 2 clockwise
+Keycode 144 = button 3 counterclockwise
+Keycode 145 = button 3 clockwise
+Keycode 112 = button 4 counterclockwise
+Keycode 113 = button 4 clockwise
+Keycode 55 = button 1 push
+Keycode 53 = button 2 push
+Keycode 51 = button 3 push
+Keycode 51 = button 4 push
+```
 
 
 
