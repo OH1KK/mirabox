@@ -6,10 +6,11 @@ Supports:
 - 10 independent button sets
 - Long-press on buttons 1–10 jumps directly to set 1–10
 - Short-press executes configured commands
-- Left large rotary switches sets forward/backward
-- Background image per set (320x240 RGB)
+- Rotary button 1 switches sets forward/backward. Pushin rotary 1 selects set 1.
+- Rotary buttons 2, 3, 4 can be programmed. 1 is reserverved for set changes.
+- Images for buttons (64x64 pixels, png)
+- Background image per set (320x240 pixels, png). Gimp template included.
 - Brightness flash feedback on actions
-- Programmable rotary encoders
 - Runs as user systemd service
 
 ## Installation
