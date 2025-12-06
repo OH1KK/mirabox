@@ -94,13 +94,14 @@ Rotary encoder example (volume):
 
 ### Controls
 
-* Action Function
-* Large left rotary > Next / previous set
-* Push large rotary (key 55)  > Jump to set 1
-* Short press button 1–10 > Execute command
-* Long press button 1–10 > Jump to corresponding set (1–10)
-* Short brightness flash > Button press acknowledged
-* Long brightness flash > Set change in progress
+| Action                  | Function                          |
+|-------------------------|-----------------------------------|
+| Large left rotary       | Next / previous set               |
+| Push large rotary       | Jump to set 1                     |
+| Short press button      | Execute command                   |
+| Long press button 1–10  | Jump to set 1–10                  |
+| Short flash             | Button acknowledged               |
+| Long flash              | Set change in progress            |
 
 Key codes (for reference)
 
