@@ -26,10 +26,8 @@ SUBSYSTEM=="usb", ATTRS{idVendor}=="6603", ATTRS{idProduct}=="1007", MODE="0666"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="6603", ATTRS{idProduct}=="1007", MODE="0666", TAG+="uaccess"
 KERNEL=="hiddev*", ATTRS{idVendor}=="6603", ATTRS{idProduct}=="1007", MODE="0666", TAG+="uaccess"
 EOF
-```
-
 sudo udevadm control --reload-rules && sudo udevadm trigger
-
+```
 Unplug and replug the device after this step.
 
 ### 2. Dependencies
