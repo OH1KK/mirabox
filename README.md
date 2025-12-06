@@ -53,7 +53,26 @@ chmod +x mirabox.py
 
 ```bash
 mkdir -p ~/.config/systemd/user
-cp mirabox.service ~/.config/systemd/user/
+
+sudo tee ~/.config/systemd/user/mirabox.service <<EOF
+[Unit]
+Description=Mirabox Remote Controller
+After=graphical-session.target pipewire.service pipewire-pulse.service
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/someuser/mirabox
+ExecStart=/usr/bin/python3 /home/someuser/mirabox/mirabox.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=graphical-session.target
+EOF
 systemctl --user daemon-reload
 systemctl --user enable --now mirabox.service
 ```
