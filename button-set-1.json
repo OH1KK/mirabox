@@ -51,17 +51,6 @@
       "command": ["libreoffice", "--calc" ],
       "gui": true
     },
-    
-    "15": {
-      "image": "./img/youtube.png",
-      "command": ["xdg-open", "https://youtube.com"],
-      "gui": true
-    },
-    "16": {
-      "image": "./img/terminal.png",
-      "command": ["gnome-terminal", "--", "htop"],
-      "gui": true
-    },
     "112": {
       "image": "./img/volume-down.png",
       "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumedown"]
