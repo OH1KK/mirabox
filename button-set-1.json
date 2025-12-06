@@ -50,18 +50,6 @@
       "image": "/usr/share/icons/hicolor/64x64/apps/libreoffice-calc.png",
       "command": ["libreoffice", "--calc" ],
       "gui": true
-    },
-    "112": {
-      "image": "./img/volume-down.png",
-      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumedown"]
-    },
-    "113": {
-      "image": "./img/volume-up.png",
-      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumeup"]
-    },
-    "54": {
-      "image": "./img/volume-mute.png",
-      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "togglemute"]
     }
   }
 }
