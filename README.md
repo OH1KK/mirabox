@@ -79,7 +79,6 @@ EOF
 systemctl --user daemon-reload
 systemctl --user enable --now mirabox.service
 ```
-Modify mirabox.service to match your user.
 
 Starting and stopping service manually
 
