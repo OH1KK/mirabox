@@ -1,5 +1,7 @@
 # Mirabox Mbox-N4 (StreamDock N1) controller for Linux
 
+![Mirabox N1](https://github.com/OH1KK/mirabox/blob/main/kkdeck.jpg?raw=true)
+
 Python-based controller for the Mirabox Mbox-N4 / StreamDock N1 device on Ubuntu 24.04 / 25.10 (Wayland + GNOME).
 
 Supports:
