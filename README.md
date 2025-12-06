@@ -156,18 +156,18 @@ Keycode 64 = touchscreen above of rotary button 1
 Keycode 65 = touchscreen above of rotary button 2
 Keycode 66 = touchscreen above of rotary button 3
 Keycode 67 = touchscreen above of rotary button 4
-Keycode 160 = button 1 counterclockwise
-Keycode 161 = button 1 clockwise
-Keycode 80 = button 2 counterclockwise
-Keycode 81 = button 2 clockwise
-Keycode 144 = button 3 counterclockwise
-Keycode 145 = button 3 clockwise
-Keycode 112 = button 4 counterclockwise
-Keycode 113 = button 4 clockwise
-Keycode 55 = button 1 push
-Keycode 53 = button 2 push
-Keycode 51 = button 3 push
-Keycode 51 = button 4 push
+Keycode 160 = rotary button 1 counterclockwise
+Keycode 161 = rotary button 1 clockwise
+Keycode 80 = rotary button 2 counterclockwise
+Keycode 81 = rotary button 2 clockwise
+Keycode 144 = rotary button 3 counterclockwise
+Keycode 145 = rotary button 3 clockwise
+Keycode 112 = rotary button 4 counterclockwise
+Keycode 113 = rotary button 4 clockwise
+Keycode 55 = rotary button 1 push
+Keycode 53 = rotary button 2 push
+Keycode 51 = rotary button 3 push
+Keycode 51 = rotary button 4 push
 ```
 
 ## Credits
