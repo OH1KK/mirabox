@@ -4,8 +4,6 @@
 
 Python-based controller for the Mirabox Mbox-N4 / StreamDock N1 device.
 
-This code includes part of StreamDock-Device-SDK which is available https://github.com/MiraboxSpace/StreamDock-Device-SDK/
-
 Supports:
 - Button short-press executes configured commands
 - Long-press on buttons 1–10 jumps directly to set 1–10
@@ -16,6 +14,8 @@ Supports:
 - Brightness flash feedback on actions
 - 10 independent button sets
 - Runs as user systemd service
+
+This code includes part of StreamDock-Device-SDK which is available https://github.com/MiraboxSpace/StreamDock-Device-SDK/
 
 ## Installation
 
