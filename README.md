@@ -152,10 +152,10 @@ Keycode 9 = button 9, status: 1 = pressed, 0 released
 Keycode 10 = button 10, status: 1 = pressed, 0 released
 Keycode 56 = Swipe right
 Keycode 57 = Swipe left
-Keycode 64 = touchscreen above of button 1
-Keycode 65 = touchscreen above of button 1
-Keycode 66 = touchscreen above of button 1
-Keycode 67 = touchscreen above of button 1
+Keycode 64 = touchscreen above of rotary button 1
+Keycode 65 = touchscreen above of rotary button 2
+Keycode 66 = touchscreen above of rotary button 3
+Keycode 67 = touchscreen above of rotary button 4
 Keycode 160 = button 1 counterclockwise
 Keycode 161 = button 1 clockwise
 Keycode 80 = button 2 counterclockwise
