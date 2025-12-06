@@ -1,0 +1,56 @@
+{
+  "background": "./img/sliderbg-4.png",
+  "buttons": {
+    "1": {
+      "image": "./img/aliexpress.png",
+      "command": ["firefox", "https://aliexpress.com"],
+      "gui": true
+    },
+    "2": {
+      "image": "./img/ebay.png",
+      "command": ["firefox", "https://ebay.com"],
+      "gui": true
+    },
+    "3": {
+      "image": "./img/amazon.png",
+      "command": ["firefox", "https://www.amazon.de/"],
+      "gui": true
+    },
+    "4": {
+      "image": "./img/verkkokauppa.png",
+      "command": ["firefox", "https://www.verkkokauppa.com/"],
+      "gui": true
+    },
+    "5": {
+      "image": "./img/gigantti.png",
+      "command": ["firefox", "https://www.gigantti.fi"],
+      "gui": true
+    },
+    "6": {
+      "image": "./img/prisma.png",
+      "command": ["firefox", "https://www.prisma.fi"],
+      "gui": true
+    },
+    "7": {
+      "image": "./img/powerfi.png",
+      "command": ["firefox", "https://www.power.fi"],
+      "gui": true
+    },
+    "8": {
+      "image": "./img/karkkainen.png",
+      "command": ["firefox", "https://www.karkkainen.com"],
+      "gui": true
+    },
+    "9": {
+      "image": "./img/biltema.png",
+      "command": ["firefox", "https://www.biltema.fi"],
+      "gui": true
+    },
+    "10": {
+      "image": "./img/motonet.png",
+      "command": ["firefox", "https://www.motonet.fi"],
+      "gui": true
+    }
+  }
+}
+

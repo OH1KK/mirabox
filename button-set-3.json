@@ -1,0 +1,31 @@
+{
+  "background": "./img/sliderbg-3.png",
+  "buttons": {
+    "1": {
+      "image": "./img/op.png",
+      "command": ["firefox", "https://www.op.fi"],
+      "gui": true
+    },
+    "2": {
+      "image": "./img/spankki.png",
+      "command": ["firefox", "https://www.s-pankki.fi/"],
+      "gui": true
+    },
+    "3": {
+      "image": "./img/nordnet.png",
+      "command": ["firefox", "https://www.nordnet.fi/"],
+      "gui": true
+    },
+    "4": {
+      "image": "./img/kraken.png",
+      "command": ["firefox", "https://www.kraken.com/"],
+      "gui": true
+    },
+    "5": {
+      "image": "./img/financeyahoo.png",
+      "command": ["firefox", "https://finance.yahoo.com"],
+      "gui": true
+    }
+  }
+}
+

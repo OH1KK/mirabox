@@ -1,0 +1,73 @@
+{
+  "background": "./img/sliderbg-7.png",
+  "buttons": {
+    "1": {
+      "image": "./img/popfm.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "88800000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "2": {
+      "image": "./img/yle1.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "91400000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "3": {
+      "image": "./img/ylex.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "94000000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "4": {
+      "image": "./img/ylesuomi.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "97600000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    
+    "5": {
+      "image": "./img/radionova.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "98800000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "6": {
+      "image": "./img/ylex3m.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "99700000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "7": {
+      "image": "./img/ylevega.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "102700000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "8": {
+      "image": "./img/jarviradio.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "103700000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "9": {
+      "image": "./img/nrj.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "104900000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "10": {
+      "image": "./img/radiodei.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "105900000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "10": {
+      "image": "./img/basso.png",
+      "command": [["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "F", "107200000"],
+                 ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "M", "WFM"]]
+    },
+    "112": {
+      "image": "./img/volume-down.png",
+      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumedown"]
+    },
+    "113": {
+      "image": "./img/volume-up.png",
+      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumeup"]
+    },
+    "54": {
+      "image": "./img/volume-mute.png",
+      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "togglemute"]
+    }
+  }
+}
