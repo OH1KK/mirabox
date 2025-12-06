@@ -42,6 +42,12 @@ Troubleshoot.
 
 ## Usage
 
+Rotary button 1 in reserved for swithcig sets. Rotate clockwise or counter clokcwise. Also pushing rotary button selects set 1. 
+
+Alterate switch: A long press for button 1-10 selects set 1-10.
+
+Short button press executes command in json.
+
 Long press button 1-10 selects button sets 1-10
 
 Button sets are in files named button-set-1.json - button-set-10.json
