@@ -168,5 +168,7 @@ Keycode 51 = button 3 push
 Keycode 51 = button 4 push
 ```
 
+## Credits
 
-
+Code is product of Grok AI.
+Instructed by OH1KK
