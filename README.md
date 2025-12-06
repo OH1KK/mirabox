@@ -5,14 +5,14 @@
 Python-based controller for the Mirabox Mbox-N4 / StreamDock N1 device.
 
 Supports:
-- 10 independent button sets
+- Button short-press executes configured commands
 - Long-press on buttons 1–10 jumps directly to set 1–10
-- Short-press executes configured commands
 - Rotary button 1 switches sets forward/backward. Pushin rotary 1 selects set 1.
 - Rotary buttons 2, 3, 4 can be programmed. 1 is reserverved for set changes.
 - Images for buttons (64x64 pixels, png)
 - Background image per set (320x240 pixels, png). Gimp template included.
 - Brightness flash feedback on actions
+- 10 independent button sets
 - Runs as user systemd service
 
 ## Installation
