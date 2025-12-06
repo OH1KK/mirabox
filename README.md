@@ -114,7 +114,7 @@ Rotary encoder example (volume):
 "80": { "image": "./img/vol-down.png", "command": ["amixer", "set", "Master", "5%-"] }
 ```
 
-### Controls
+## Controls
 
 | Action                  | Function                          |
 |-------------------------|-----------------------------------|
@@ -125,7 +125,7 @@ Rotary encoder example (volume):
 | Short flash             | Button acknowledged               |
 | Long flash              | Set change in progress            |
 
-### Key codes (for reference)
+## Key codes (for reference)
 
 ```
 Keycode 1 = button 1, status: 1 = pressed, 0 released
