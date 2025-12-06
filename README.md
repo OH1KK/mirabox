@@ -7,7 +7,7 @@ Supports:
 - Long-press on buttons 1–10 jumps directly to set 1–10
 - Short-press executes configured commands
 - Left large rotary switches sets forward/backward
-- Background image per set (800×200 RGB)
+- Background image per set (320x240 RGB)
 - Brightness flash feedback on actions
 - Programmable rotary encoders
 - Runs as user systemd service
@@ -22,7 +22,7 @@ sudo tee /etc/udev/rules.d/99-mirabox.rules <<EOF
 SUBSYSTEM=="usb", ATTRS{idVendor}=="6603", ATTRS{idProduct}=="1007", MODE="0666", TAG+="uaccess"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="6603", ATTRS{idProduct}=="1007", MODE="0666", TAG+="uaccess"
 KERNEL=="hiddev*", ATTRS{idVendor}=="6603", ATTRS{idProduct}=="1007", MODE="0666", TAG+="uaccess"
-EOF
+```
 
 sudo udevadm control --reload-rules && sudo udevadm trigger
 
@@ -34,7 +34,7 @@ Unplug and replug the device after this step.
 sudo apt update
 sudo apt install -y python3 python3-pip python3-pyudev libhidapi-libusb0 git
 pip3 install --user pillow willow
-EOF
+```
 
 ### 3. Clone and test
 
@@ -43,10 +43,7 @@ git clone https://github.com/OH1KK/mirabox.git
 cd mirabox
 chmod +x mirabox.py
 ./mirabox.py
-EOF
-
-Auto-start (systemd user service)
-bash
+```
 ￼
 ### 4. Auto-start (systemd user service)
 
@@ -55,12 +52,12 @@ mkdir -p ~/.config/systemd/user
 cp mirabox.service ~/.config/systemd/user/
 systemctl --user daemon-reload
 systemctl --user enable --now mirabox.service
-EOF
+```
 
 View logs:
 ```bash￼
 journalctl --user -u mirabox.service -f
-EOF
+```
 
 ## Configuration
 
@@ -74,7 +71,7 @@ GUI command:
   "command": ["firefox", "https://example.com"],
   "gui": true
 }
-EOF
+```
 
 Multiple commands:
 ```json
@@ -85,13 +82,13 @@ Multiple commands:
     ["command2", "arg"]
   ]
 }
-EOF
+```
 
 Rotary encoder example (volume):
 ```json
 "81": { "image": "./img/vol-up.png",   "command": ["amixer", "set", "Master", "5%+"] },
 "80": { "image": "./img/vol-down.png", "command": ["amixer", "set", "Master", "5%-"] }
-EOF
+```
 
 ### Controls
 
@@ -109,8 +106,6 @@ Buttons 1–10          → key 1–10
 Large rotary CCW/CW   → 160 / 161
 Small rotaries        → 80/81, 144/145, 112/113
 Large rotary push     → key 55
-
-
 
 
 
