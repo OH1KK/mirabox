@@ -96,14 +96,14 @@ Rotary encoder example (volume):
 
 | Action                  | Function                          |
 |-------------------------|-----------------------------------|
-| Large left rotary       | Next / previous set               |
-| Push large rotary       | Jump to set 1                     |
+| Rotate left rotary      | Next / previous set               |
+| Push left rotary button | Jump to set 1                     |
 | Short press button      | Execute command                   |
 | Long press button 1–10  | Jump to set 1–10                  |
 | Short flash             | Button acknowledged               |
 | Long flash              | Set change in progress            |
 
-Key codes (for reference)
+### Key codes (for reference)
 
 ```
 Keycode 1 = button 1, status: 1 = pressed, 0 released
