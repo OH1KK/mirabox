@@ -101,7 +101,7 @@ Example entries
 GUI command:
 ```json
 "1": {
-  "image": "/usr/share/icons/hicolor/scalable/apps/firefox.svg",
+  "image": "/usr/share/icons/hicolor/scalable/apps/firefox.png",
   "command": ["firefox", "https://example.com"],
   "gui": true
 }
