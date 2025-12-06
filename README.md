@@ -114,3 +114,30 @@ Keycode 53 = button 2 push
 Keycode 51 = button 3 push
 Keycode 51 = button 4 push
 ````
+
+## How to start automatically 
+
+Make unit file into your home directory ~/.config/systemd/user/graphical-session.target.wants/
+
+mirabox.service
+````
+[Unit]
+Description=Mirabox Remote Controller
+After=graphical-session.target pipewire.service pipewire-pulse.service
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/oh1kk/koodi/mirabox
+ExecStart=/usr/bin/python3 /home/oh1kk/koodi/mirabox/mirabox.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=graphical-session.target
+````
+
+This makes service start automatically
