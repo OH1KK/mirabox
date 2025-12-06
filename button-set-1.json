@@ -1,0 +1,78 @@
+{
+  "background": "./img/sliderbg-1.png",
+  "buttons": {
+    "1": {
+      "image": "/usr/share/icons/hicolor/64x64/apps/firefox.png",
+      "command": ["firefox", "https://x.com/i/grok"],
+      "gui": true
+    },
+    "2": {
+      "image": "/snap/gtk-common-themes/1534/share/icons/elementary-xfce/apps/64/thunderbird.png",
+      "command": ["thunderbird" ],
+      "gui": true
+    },
+    "3": {
+      "image": "/usr/share/icons/Yaru/48x48@2x/devices/multimedia-volume-control.png",
+      "command": ["pavucontrol" ],
+      "gui": true
+    },
+    "4": {
+      "image": "/usr/share/icons/hicolor/96x96/apps/gimp.png",
+      "command": ["gimp" ],
+      "gui": true
+    },
+    "5": {
+      "image": "./img/gnome-calculator.png",
+      "command": [ "gnome-calculator" ],
+      "gui": true
+    },
+    "6": {
+      "image": "./img/tilix.png",
+      "command": [ "/usr/bin/tilix", "--action=app-new-window" ],
+      "gui": true
+    },
+    "7": {
+      "image": "/usr/share/icons/Yaru/32x32@2x/apps/org.gnome.Nautilus.png",
+      "command": [ "nautilus" ],
+      "gui": true
+    },
+    "8": {
+      "image": "/usr/share/icons/Yaru/32x32@2x/apps/accessories-text-editor.png",
+      "command": [ "gnome-text-editor" ],
+      "gui": true
+    },
+    "9": {
+      "image": "/snap/chromium/3320/chromium.png",
+      "command": ["chromium" ],
+      "gui": true
+    },
+    "10": {
+      "image": "/usr/share/icons/hicolor/64x64/apps/libreoffice-calc.png",
+      "command": ["libreoffice", "--calc" ],
+      "gui": true
+    },
+    
+    "15": {
+      "image": "./img/youtube.png",
+      "command": ["xdg-open", "https://youtube.com"],
+      "gui": true
+    },
+    "16": {
+      "image": "./img/terminal.png",
+      "command": ["gnome-terminal", "--", "htop"],
+      "gui": true
+    },
+    "112": {
+      "image": "./img/volume-down.png",
+      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumedown"]
+    },
+    "113": {
+      "image": "./img/volume-up.png",
+      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "volumeup"]
+    },
+    "54": {
+      "image": "./img/volume-mute.png",
+      "command": ["/home/oh1kk/koodi/gqrx-remote/gqrx-remote.py", "togglemute"]
+    }
+  }
+}
