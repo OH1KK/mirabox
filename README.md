@@ -133,9 +133,7 @@ Note! If you are using dynamic updates, make backup of your button sets. Dynamic
 
 ## Dynamic icon updates
 
-You can update icons by sending a new version using network. You must start daemon with --enable-networking paremeter, otherwise it does not listen for updates. There is no security implemented in updates, to think before enabling dynamic updates.
-
-Dynamic icon updates also overwrites json files so make sure you have backups for accidents.
+You can update icons by sending a new version using network. You must start daemon with --enable-networking paremeter, otherwise it does not listen for updates. There is no security implemented in updates, so think before enabling dynamic updates. Dynamic icon updates also overwrites json-files so make sure you have backups just in case.
 
 ### How dynamic icon update works 
 
