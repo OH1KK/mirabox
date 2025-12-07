@@ -157,7 +157,7 @@ while [ forever ]; do
         # Make 64x64 pixel png from it
         convert -background blue -fill white -gravity center -font "DejaVu-Sans" \
                 -size 64x64 -pointsize 12 label:"Uptime\nseconds\n$UPTIME" $tempfile
-        # Send image to miraboxd. Update set 9 image 2.
+        # Send image to mirabox. Update button-set 9 image 1.
         curl -s -X POST -H "Content-Type: application/octet-stream" --data-binary @$tempfile http://127.0.0.1:8333/update/9/1 >/dev/null
         sleep 1
 done
