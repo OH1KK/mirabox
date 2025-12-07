@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="PIL.Image")
 from StreamDock.DeviceManager import DeviceManager
 from StreamDock.Devices.StreamDockN1 import StreamDockN1
 
-__version__ = "1.9.10"
+__version__ = "0.2.0"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--version", action="version", version=f"MiraBox Controller v{__version__}")
