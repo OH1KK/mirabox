@@ -7,13 +7,13 @@ Python-based controller for the Mirabox Mbox-N4 / StreamDock N1 device.
 Supports:
 - Button short-press executes configured commands
 - Long-press on buttons 1–10 jumps directly to set 1–10
-- Rotary button 1 switches sets forward/backward. Pushing rotary 1 button selects set 1.
 - Rotary buttons 2, 3 and 4 can be used in json
 - Images for buttons (64x64 pixels, png)
 - Background image per set (320x240 pixels, png). Gimp template included.
 - Brightness flash feedback on actions
 - 10 independent button sets
 - Runs as user systemd service
+- Support dynamic icon updates by receiving a new image from network
 
 This code includes part of StreamDock-Device-SDK which is available https://github.com/MiraboxSpace/StreamDock-Device-SDK/
 
@@ -64,11 +64,12 @@ sudo tee ~/.config/systemd/user/mirabox.service <<EOF
 Description=Mirabox Controller daemon
 After=graphical-session.target pipewire.service pipewire-pulse.service
 PartOf=graphical-session.target
+Documentation=https://github.com/OH1KK/mirabox
 
 [Service]
 Type=simple
 WorkingDirectory=%h/mirabox
-ExecStart=/usr/bin/python3 %h/mirabox/mirabox.py
+ExecStart=/usr/bin/python3 %h/mirabox/mirabox.py --enable-networking
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -81,6 +82,8 @@ EOF
 systemctl --user daemon-reload
 systemctl --user enable --now mirabox.service
 ```
+
+If you don't need dynamic icon updates then remove --enable-networking from unit file.
 
 Starting and stopping service manually
 
@@ -97,7 +100,7 @@ journalctl --user -u mirabox.service -f
 
 ## Configuration
 
-Button sets are defined in files button-set-1.json through button-set-10.json.
+Button sets are defined in dynamic/button-sets/button-set-1.json through button-set-10.json.
 
 Example entries
 GUI command:
@@ -126,12 +129,45 @@ Rotary encoder example (volume):
 "80": { "image": "./img/vol-down.png", "command": ["amixer", "set", "Master", "5%-"] }
 ```
 
+Note! If you are using dynamic updates, make backup of your button sets. Dynamic update will overwrite updates into file.
+
+## Dynamic icon updates
+
+You can update icons by sending a new version using network. You must start daemon with --enable-networking paremeter, otherwise it does not listen for updates. There is no security implemented in updates, so think before enabling dynamic updates. Dynamic icon updates also overwrites json-files so make sure you have backups just in case.
+
+### How dynamic icon update works 
+
+mirabox works as server. It listens tcp port 8333. And you can send a new icon using script. For example
+
+```bash
+#!/bin/bash
+# Note! Daemon must be running with --enable-networking to accept updates from net.
+
+set -euo pipefail
+# Function to clean up temp file on exit (even on Ctrl+C or errors)
+cleanup() {
+    [[ -f "$tempfile" ]] && rm -f "$tempfile"
+}
+trap cleanup EXIT
+
+tempfile=$(mktemp --suffix=.png)
+while [ forever ]; do
+        # Get uptime
+        UPTIME=`cat /proc/uptime | cut -d \  -f 1 | cut -d \. -f 1`
+        # Make 64x64 pixel png from it
+        convert -background blue -fill white -gravity center -font "DejaVu-Sans" \
+                -size 64x64 -pointsize 12 label:"Uptime\nseconds\n$UPTIME" $tempfile
+        # Send image to mirabox. Update button-set 9 image 1.
+        curl -s -X POST -H "Content-Type: application/octet-stream" --data-binary @$tempfile http://127.0.0.1:8333/update/9/1 >/dev/null
+        sleep 1
+done
+```
+
 ## Controls
 
 | Action                  | Function                          |
 |-------------------------|-----------------------------------|
 | Rotate left rotary      | Next / previous set               |
-| Push left rotary button | Jump to set 1                     |
 | Short press button      | Execute command                   |
 | Long press button 1–10  | Jump to set 1–10                  |
 | Short flash             | Button acknowledged               |

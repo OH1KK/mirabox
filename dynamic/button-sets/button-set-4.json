@@ -1,5 +1,5 @@
 {
-  "background": "./img/sliderbg-3.png",
+  "background": "./img/sliderbg-4.png",
   "buttons": {
     "1": {
       "image": "./img/op.png",
@@ -28,4 +28,3 @@
     }
   }
 }
-
