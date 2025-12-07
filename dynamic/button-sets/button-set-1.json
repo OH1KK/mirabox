@@ -50,17 +50,6 @@
       "image": "/usr/share/icons/hicolor/64x64/apps/libreoffice-calc.png",
       "command": ["libreoffice", "--calc" ],
       "gui": true
-    },
-    
-    "15": {
-      "image": "./img/youtube.png",
-      "command": ["xdg-open", "https://youtube.com"],
-      "gui": true
-    },
-    "16": {
-      "image": "./img/terminal.png",
-      "command": ["gnome-terminal", "--", "htop"],
-      "gui": true
     }
   }
 }
