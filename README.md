@@ -138,19 +138,25 @@ mirabox works as server. It listens tcp port 8333. And you can send a new icon u
 
 ```bash
 #!/bin/bash
-
 # Note! Daemon must be running with --enable-networking to accept updates from net.
 
-# Get uptime
-while [ forever ]; do
-  UPTIME=`uptime | cut -d \, -f 1 | cut -d p -f 2`
-  # Make 64x64 pixel png from it
-  convert -background blue -fill white -gravity center -font "DejaVu-Sans" \
-          -size 64x64 -pointsize 16 label:"uptime\n$UPTIME" ./uptime-button.png
+set -euo pipefail
+# Function to clean up temp file on exit (even on Ctrl+C or errors)
+cleanup() {
+    [[ -f "$tempfile" ]] && rm -f "$tempfile"
+}
+trap cleanup EXIT
 
-  # Send a new icon to mirabox. This updates button-set 9 image 1.
-  curl -X POST -H "Content-Type: application/octet-stream" --data-binary @uptime-button.png http://127.0.0.1:8333/update/9/1
-  sleep 5
+tempfile=$(mktemp --suffix=.png)
+while [ forever ]; do
+        # Get uptime
+        UPTIME=`cat /proc/uptime | cut -d \  -f 1 | cut -d \. -f 1`
+        # Make 64x64 pixel png from it
+        convert -background blue -fill white -gravity center -font "DejaVu-Sans" \
+                -size 64x64 -pointsize 12 label:"Uptime\nseconds\n$UPTIME" $tempfile
+        # Send image to miraboxd. Update set 9 image 2.
+        curl -s -X POST -H "Content-Type: application/octet-stream" --data-binary @$tempfile http://127.0.0.1:8333/update/9/1 >/dev/null
+        sleep 1
 done
 ```
 
