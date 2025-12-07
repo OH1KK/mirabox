@@ -64,6 +64,7 @@ sudo tee ~/.config/systemd/user/mirabox.service <<EOF
 Description=Mirabox Controller daemon
 After=graphical-session.target pipewire.service pipewire-pulse.service
 PartOf=graphical-session.target
+Documentation=https://github.com/OH1KK/mirabox
 
 [Service]
 Type=simple
@@ -81,6 +82,8 @@ EOF
 systemctl --user daemon-reload
 systemctl --user enable --now mirabox.service
 ```
+
+If you don't need dynamic icon updates then remove --enable-networking from unit file.
 
 Starting and stopping service manually
 
