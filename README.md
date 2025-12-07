@@ -132,6 +132,8 @@ Note! If you are using dynamic updates, make backup of your button sets. Dynamic
 
 You can update icons by sending a new version using network. You must start daemon with --enable-networking paremeter, otherwise it does not listen for updates. There is no security implemented in updates, to think before enabling dynamic updates.
 
+Dynamic icon updates also overwrites json files so make sure you have backups for accidents.
+
 ### How dynamic icon update works 
 
 mirabox works as server. It listens tcp port 8333. And you can send a new icon using script. For example
